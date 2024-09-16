@@ -42,6 +42,9 @@ export default function Login() {
             navigate('/hello_world')
             // navigate(fromLocation, { replace: true })
         } catch (error) {
+            if(error.response.status == 401 ){
+                alert("Please provide valid cradentials")
+            }
             setLoading(false)
             // TODO: handle errors
         }

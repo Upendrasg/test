@@ -15,7 +15,8 @@ class UserManager(BaseUserManager):
             raise ValueError("Email is required")
 
         user = self.model(
-            email=self.normalize_email(email)
+            email=self.normalize_email(email),
+            ethereum_wallet_address=kwargs.get('ethereum_wallet_address')
         )
 
         user.set_password(password)
@@ -27,7 +28,8 @@ class UserManager(BaseUserManager):
     def create_superuser(self, email, password, **kwargs):
         user = self.create_user(
             email=self.normalize_email(email),
-            password=password
+            password=password,
+            ethereum_wallet_address=kwargs.get('ethereum_wallet_address')
         )
 
         user.first_name = kwargs.get('first_name')
@@ -49,6 +51,7 @@ class User(AbstractBaseUser):
     is_superuser = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+    ethereum_wallet_address = models.CharField(max_length=200, blank=True, null=True)
 
     objects = UserManager()
 

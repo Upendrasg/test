@@ -10,6 +10,7 @@ export default function Register() {
     const email = useRef()
     const password = useRef()
     const password2 = useRef(undefined)
+    const walletAddress = useRef()
 
 
     async function onSubmitForm(event) {
@@ -19,19 +20,24 @@ export default function Register() {
             last_name: last_name.current.value,
             email: email.current.value,
             password: password.current.value,
-            password2: password2.current.value
+            password2: password2.current.value,
+            ethereum_wallet_address: walletAddress.current.value
           };
-
         setLoading(true)
 
         try {
-            const response = await axiosInstance.post('auth/register', JSON.stringify(data))
-
-            setLoading(false)
-
-            navigate('/auth/login')
+            if(data.ethereum_wallet_address == "" && data.first_name == ""  && data.last_name == "" &&  data.email == ""  && data.password == "" && data.password2 == "" ){
+                alert("Please provide all details")
+            }else{
+                const response = await axiosInstance.post('auth/register', JSON.stringify(data))
+    
+                setLoading(false)
+    
+                navigate('/auth/login')
+            }
         } catch (error) {
             setLoading(false)
+            console.log(error);
             // TODO: handle errors
         }
     }
@@ -54,6 +60,9 @@ export default function Register() {
                 </div>
                 <div className="mb-3">
                     <input type="password" placeholder='Confirm Password' autoComplete='off' className='form-control' id="passwordConfirmation" ref={password2} />
+                </div>
+                <div className="mb-3">
+                    <input type="text" placeholder='wallet address' autoComplete='off' className='form-control' id="EthereumWalletAddress" ref={walletAddress} />
                 </div>
                 <div className="mb-3">
                     <button disabled={loading} className='btn btn-success' type="submit">Register</button>
