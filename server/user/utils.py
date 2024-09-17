@@ -7,6 +7,8 @@ def get_wallet_balance(wallet_address=None):
     
     # Connect to Ethereum node
     w3 = Web3(Web3.HTTPProvider(f'https://mainnet.infura.io/v3/{INFURA_PROJECT_ID}'))
+    if not w3.is_connected():
+        return "Failed to connect to Ethereum node"
     try:
         # Get balance in Wei
         balance_wei = w3.eth.get_balance(wallet_address)
